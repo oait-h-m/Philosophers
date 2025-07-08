@@ -12,10 +12,8 @@
 
 #include "philo.h"
 
-
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	if (pars_arguments(ac, &av[1]) == 0)
-		return -1;
-
+		return (-1);
 }
