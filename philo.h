@@ -11,15 +11,14 @@
 /* ************************************************************************** */
 
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-
+# include <stdio.h>
+# include <limits.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 int	pars_arguments(int ac, char **av);
-
-
+long	ft_atoi(char *str, int *debug);
 
 #endif
