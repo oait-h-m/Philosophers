@@ -12,24 +12,29 @@
 
 #include "philo.h"
 
-
 static int	all_is_numbers(char *argument)
 {
 	int	i;
+	int	number;
+	int	debug;
 
 	i = 0;
-	if (argument[i] == '-' || argument[i] == '+')
-		i++;
+	number = ft_atoi(argument, &debug);
+	if (debug == -1)
+	{
+		printf("Error: Argument is not a valid number: %s\n", argument);
+		return (0);
+	}
 	while (argument[i])
 	{
 		if (argument[i] < '0' || argument[i] > '9')
 		{
-			printf("Error: Argument %d is not a valid number: %s\n", i, argument);
-			return 0;
+			printf("Error: Argument is not a valid number: %s\n", argument);
+			return (0);
 		}
 		i++;
 	}
-	return 1;
+	return (1);
 }
 
 int	pars_arguments(int ac, char **av)
@@ -39,15 +44,16 @@ int	pars_arguments(int ac, char **av)
 	i = 0;
 	if (ac < 5 || ac > 6)
 	{
-		printf("Usage: ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n");
-
-		return 0;
+		printf("Usage: ./philo number_of_philosophers time_to_die ");
+		printf("time_to_eat time_to_sleep ");
+	 	printf("[number_of_times_each_philosopher_must_eat]\n");
+		return (0);
 	}
 	while (av[i])
 	{
 		if (!all_is_numbers(av[i]))
-			return 0;
+			return (0);
 		i++;
 	}
-	return 1;
+	return (1);
 }
