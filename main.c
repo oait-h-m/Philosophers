@@ -6,7 +6,7 @@
 /*   By: oait-h-m <oait-h-m@1337.ma>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:43:00 by oait-h-m          #+#    #+#             */
-/*   Updated: 2025/07/03 16:43:17 by oait-h-m         ###   ########.fr       */
+/*   Updated: 2025/07/09 18:02:59 by oait-h-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	main(int ac, char **av)
 {
+	t_program	*info;
 	if (pars_arguments(ac, &av[1]) == 0)
 		return (-1);
+	init_program_info(&info, av);
 }
