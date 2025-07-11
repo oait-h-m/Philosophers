@@ -25,7 +25,9 @@ void	init_arguments(t_program **data, char **av)
 		(*data)->number_of_meals = ft_atoi(av[5], 0);
 }
 
-void	init_philo(t_philo *philo)
+void	init_philo(t_program *data)
 {
-	philo = malloc(sizeof(t_philo) * )
+	t_philo	philo;
+
+	data->philo = malloc(sizeof(t_philo) * data->n_of_philo);
 }
