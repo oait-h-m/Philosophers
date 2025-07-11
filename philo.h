@@ -31,11 +31,12 @@ void	init_program_info(t_program **data, char **av);
 
 typedef	struct s_program
 {
-	int	n_of_philo;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	number_of_meals;
+	long	n_of_philo;
+	long	time_to_die;
+	long	time_to_eat;
+	long	time_to_sleep;
+	long	number_of_meals;
+	int	is_dead;
 	t_philo	*philo;
 
 }		t_program;
