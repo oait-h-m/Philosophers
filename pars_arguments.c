@@ -15,16 +15,17 @@
 static int	all_is_numbers(char *argument)
 {
 	int	i;
-	int	number;
 	int	debug;
 
 	i = 0;
-	number = ft_atoi(argument, &debug);
+	ft_atoi(argument, &debug);
 	if (debug == -1)
 	{
 		printf("Error: Argument is not a valid number: %s\n", argument);
 		return (0);
 	}
+	if (argument[i] == '+' || argument[i] == '-')
+		i++;
 	while (argument[i])
 	{
 		if (argument[i] < '0' || argument[i] > '9')
