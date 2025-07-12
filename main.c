@@ -15,7 +15,21 @@
 int	main(int ac, char **av)
 {
 	t_program	*info;
+
 	if (pars_arguments(ac, &av[1]) == 0)
 		return (-1);
 	init_program_info(&info, av);
+	if (!info)
+		return (-1);
+	if (info->n_of_philo == 1)
+	{
+		printf("0 1 has taken a fork\n");
+		ft_usleep(info->time_to_die);
+		printf("%ld 1 died\n", info->time_to_die);
+		cleanup(info);
+		return (0);
+	}
+	start_simulation(info);
+	cleanup(info);
+	return (0);
 }
