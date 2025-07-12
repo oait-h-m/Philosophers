@@ -40,3 +40,31 @@ long	ft_atoi(char *str, int *debug)
 	}
 	return (result * sign);
 }
+
+long	get_time(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void	ft_usleep(long time)
+{
+	long	start;
+
+	start = get_time();
+	while ((get_time() - start) < time)
+		usleep(100);
+}
+
+void	print_message(t_philo *philo, char *message)
+{
+	long	timestamp;
+
+	pthread_mutex_lock(&philo->program->write_mutex);
+	timestamp = get_time() - philo->program->start_time;
+	if (!philo->program->is_dead)
+		printf("%ld %d %s\n", timestamp, philo->id, message);
+	pthread_mutex_unlock(&philo->program->write_mutex);
+}
