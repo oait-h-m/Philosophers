@@ -12,6 +12,7 @@
 
 #include "philo.h"
 
+
 void	*one_philo(void *data)
 {
 	t_program	*info;
@@ -23,12 +24,25 @@ void	*one_philo(void *data)
 	return NULL;
 }
 
-void	*routine(void *arg)
+void	*simulation(void *arg)
 {
-	t_program	*philo;
+	return NULL;
+}
 
-	philo = (t_program *) arg;
+void	*routine(t_program *philo)
+{
+	pthread_t	thread;
+	int		i;
+
+	i= 0;
+	if (philo->number_of_meals == 0)
+		return NULL;
 	if (philo->philo->id % 2 == 0)
 		usleep(1000);
+	while (i < philo->n_of_philo)
+	{
+		pthread_create(&thread, NULL, simulation, arg);
+		i++;
+	}
 	return NULL;
 }
