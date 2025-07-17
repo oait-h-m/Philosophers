@@ -12,36 +12,31 @@
 
 #include "philo.h"
 
-static void	is_sign(char *str, int *sign, int *i)
-{
-	if (str[*i] == '-')
-		*sign = -1;
-	(*i)++;
-}
-
 long	ft_atoi(char *str, int *debug)
 {
 	int			i;
-	int			sign;
 	long			result;
 
 	result = 0;
 	i = 0;
-	sign = 1;
-	*debug = 1;
+	*debug = SUCCESS;
 	if (str[i] == '-' || str[i] == '+')
-		is_sign(str, &sign, &i);
+	{
+		if (str[i] == '-')
+			*debug = FAILED;
+		i++;
+	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		result = result * 10 + (str[i] - 48);
 		if (result > INT_MAX || result < INT_MIN)
-			*debug = -1;
+			*debug = FAILED;
 		i++;
 	}
-	return (result * sign);
+	return (result);
 }
 
-long	get_time(void)
+long	get_current_time(void)
 {
 	struct timeval	tv;
 
@@ -53,18 +48,8 @@ void	ft_usleep(long time)
 {
 	long	start;
 
-	start = get_time();
-	while ((get_time() - start) < time)
+	start = get_current_time();
+	while ((get_current_time() - start) < time)
 		usleep(100);
 }
 
-void	print_message(t_philo *philo, char *message)
-{
-	long	timestamp;
-
-	pthread_mutex_lock(&philo->program->write_mutex);
-	timestamp = get_time() - philo->program->start_time;
-	if (!philo->program->is_dead)
-		printf("%ld %d %s\n", timestamp, philo->id, message);
-	pthread_mutex_unlock(&philo->program->write_mutex);
-}
