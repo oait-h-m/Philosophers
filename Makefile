@@ -2,7 +2,7 @@ NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread
 
-SRC = main.c pars_arguments.c utils.c init.c philosopher.c simulation.c
+SRC = main.c pars_arguments.c utils.c init.c simulation.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
