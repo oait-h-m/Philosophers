@@ -45,7 +45,7 @@ int	pars_arguments(int ac, char **av)
 	i = 1;
 	if (ac < 5 || ac > 6)
 	{
-	 	printf("Error: Invalid arguments\n");
+		printf("Error: Invalid arguments\n");
 		return (FAILED);
 	}
 	while (av[i])
