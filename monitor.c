@@ -22,12 +22,37 @@ void	philo_is_die(t_program **data, int i)
 	pthread_mutex_unlock(&(*data)->write_mutex);
 }
 
+int	check_philosopher_death(t_program *data, int i)
+{
+	long	time_since_meal;
+
+	pthread_mutex_lock(&data->death_mutex);
+	time_since_meal = get_current_time() - data->st_philo[i].last_meal_time;
+	if (time_since_meal >= data->time_to_die)
+	{
+		philo_is_die(&data, i);
+		return (1);
+	}
+	return (0);
+}
+
+int	check_meals_finished(t_program *data, int i)
+{
+	if (data->number_of_meals != -1
+		&& data->st_philo[i].meals_eaten >= data->number_of_meals)
+	{
+		pthread_mutex_unlock(&data->death_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&data->death_mutex);
+	return (0);
+}
+
 void	*ft_monitor(void *arg)
 {
 	t_program	*data;
 	int			i;
 	int			finish;
-	long		time_since_meal;
 
 	data = (t_program *)arg;
 	while (!data->is_dead)
@@ -36,13 +61,9 @@ void	*ft_monitor(void *arg)
 		finish = 0;
 		while (i < data->n_of_philo && !data->is_dead)
 		{
-			pthread_mutex_lock(&data->death_mutex);
-			time_since_meal = get_current_time() - data->st_philo[i].last_meal_time;
-			if (time_since_meal >= data->time_to_die)
-				return (philo_is_die(&data, i), NULL);
-			if (data->number_of_meals != -1 && data->st_philo[i].meals_eaten >= data->number_of_meals)
-				finish++;
-			pthread_mutex_unlock(&data->death_mutex);
+			if (check_philosopher_death(data, i))
+				return (NULL);
+			finish += check_meals_finished(data, i);
 			i++;
 		}
 		if (data->number_of_meals != -1 && finish == data->n_of_philo)
