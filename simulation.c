@@ -6,7 +6,7 @@
 /*   By: oait-h-m <oait-h-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 07:16:25 by oait-h-m          #+#    #+#             */
-/*   Updated: 2025/07/23 21:27:44 by oait-h-m         ###   ########.fr       */
+/*   Updated: 2025/07/23 22:41:18 by oait-h-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->program->forks[philo->l_fork]);
 	print_action(philo, "has taken a fork");
-	pthread_mutex_lock(&philo->program->forks[philo->l_fork]);
+	pthread_mutex_lock(&philo->program->forks[philo->r_fork]);
 	print_action(philo, "has taken a fork");
 	print_action(philo, "is eating");
 	pthread_mutex_lock(&philo->program->death_mutex);
