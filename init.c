@@ -18,7 +18,7 @@ int	init_forks(t_program **data)
 
 	(*data)->forks = malloc(sizeof(pthread_mutex_t) * (*data)->n_of_philo);
 	if (!(*data)->forks)
-		return FAILED;
+		return (FAILED);
 	i = 0;
 	while (i < (*data)->n_of_philo)
 	{
@@ -27,28 +27,28 @@ int	init_forks(t_program **data)
 	}
 	pthread_mutex_init(&(*data)->write_mutex, NULL);
 	pthread_mutex_init(&(*data)->death_mutex, NULL);
-	return SUCCESS;
+	return (SUCCESS);
 }
 
 int	init_philo(t_program **data)
 {
 	int	i;
 
-	(*data)->philo = malloc(sizeof(t_philo) * (*data)->n_of_philo);
-	if (!(*data)->philo)
-		return FAILED;
+	(*data)->st_philo = malloc(sizeof(t_philo) * (*data)->n_of_philo);
+	if (!(*data)->st_philo)
+		return (FAILED);
 	i = 0;
 	while (i < (*data)->n_of_philo)
 	{
-		(*data)->philo[i].id = i + 1;
-		(*data)->philo[i].l_fork = i;
-		(*data)->philo[i].r_fork = (i + 1) % (*data)->n_of_philo;
-		(*data)->philo[i].meals_eaten = 0;
-		(*data)->philo[i].last_meal_time = (*data)->start_time;
-		(*data)->philo[i].program = *data;
+		(*data)->st_philo[i].id = i + 1;
+		(*data)->st_philo[i].l_fork = i;
+		(*data)->st_philo[i].r_fork = (i + 1) % (*data)->n_of_philo;
+		(*data)->st_philo[i].meals_eaten = 0;
+		(*data)->st_philo[i].last_meal_time = (*data)->start_time;
+		(*data)->st_philo[i].program = *data;
 		i++;
 	}
-	return SUCCESS;
+	return (SUCCESS);
 }
 
 int	init_arguments(t_program **data, char **av)
@@ -57,7 +57,7 @@ int	init_arguments(t_program **data, char **av)
 
 	*data = malloc(sizeof(t_program));
 	if (!*data)
-		return FAILED;
+		return (FAILED);
 	(*data)->n_of_philo = ft_atoi(av[1], &debug);
 	(*data)->time_to_die = ft_atoi(av[2], &debug);
 	(*data)->time_to_eat = ft_atoi(av[3], &debug);
@@ -69,6 +69,6 @@ int	init_arguments(t_program **data, char **av)
 	else
 		(*data)->number_of_meals = FAILED;
 	if (init_forks(data) == FAILED || init_philo(data) == FAILED)
-		return FAILED;
-	return SUCCESS;
+		return (FAILED);
+	return (SUCCESS);
 }
