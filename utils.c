@@ -52,6 +52,7 @@ void	ft_usleep(long time)
 	while ((get_current_time() - start) < time)
 		usleep(100);
 }
+
 void	ft_free(t_program *data)
 {
 	int	i;
