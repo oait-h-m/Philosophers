@@ -14,8 +14,8 @@
 
 long	ft_atoi(char *str, int *debug)
 {
-	int			i;
-	long			result;
+	int		i;
+	long	result;
 
 	result = 0;
 	i = 0;
@@ -52,4 +52,3 @@ void	ft_usleep(long time)
 	while ((get_current_time() - start) < time)
 		usleep(100);
 }
-
