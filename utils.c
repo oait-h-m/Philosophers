@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oait-h-m <oait-h-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 15:21:06 by oait-h-m          #+#    #+#             */
-/*   Updated: 2025/06/30 22:35:39 by oait-h-m         ###   ########.fr       */
+/*   Updated: 2025/07/23 22:49:20 by oait-h-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,27 @@ void	ft_usleep(long time)
 	start = get_current_time();
 	while ((get_current_time() - start) < time)
 		usleep(100);
+}
+void	ft_free(t_program *data)
+{
+	int	i;
+
+	if (data)
+	{
+		if (data->forks)
+		{
+			i = 0;
+			while (i < data->n_of_philo)
+			{
+				pthread_mutex_destroy(&data->forks[i]);
+				i++;
+			}
+			free(data->forks);
+		}
+		pthread_mutex_destroy(&data->write_mutex);
+		pthread_mutex_destroy(&data->death_mutex);
+		if (data->st_philo)
+			free(data->st_philo);
+		free(data);
+	}
 }
