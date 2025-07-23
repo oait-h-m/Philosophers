@@ -6,7 +6,7 @@
 /*   By: oait-h-m <oait-h-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:43:35 by oait-h-m          #+#    #+#             */
-/*   Updated: 2025/07/23 21:21:20 by oait-h-m         ###   ########.fr       */
+/*   Updated: 2025/07/23 22:49:48 by oait-h-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void						*one_philo(void *data);
 void						ft_eat(t_philo *philo);
 int							simulation(t_program *data);
 void						*ft_monitor(void *arg);
+void						ft_free(t_program *data);
+
 
 struct						s_program
 {
