@@ -1,25 +1,23 @@
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread
+CFLAGS = -Wall -Wextra -Werror 
 
-SRC = main.c pars_arguments.c utils.c init.c simulation.c
+SRC = main.c pars_arguments.c utils.c init.c simulation.c monitor.c
 OBJ = $(SRC:.c=.o)
 
-all: $(NAME)
+all : $(NAME)
 
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
-
-%.o: %.c
+%.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-clean:
+clean : 
 	rm -f $(OBJ)
 
-fclean: clean
+fclean : clean 
 	rm -f $(NAME)
 
-re: fclean all
+re : fclean all 
 
 .SECONDARY:
-
