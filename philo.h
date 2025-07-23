@@ -39,7 +39,6 @@ int							simulation(t_program *data);
 void						*ft_monitor(void *arg);
 void						ft_free(t_program *data);
 
-
 struct						s_program
 {
 	long					n_of_philo;
