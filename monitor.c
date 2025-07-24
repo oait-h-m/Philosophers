@@ -33,6 +33,7 @@ int	check_philosopher_death(t_program *data, int i)
 		philo_is_die(&data, i);
 		return (1);
 	}
+	pthread_mutex_unlock(&data->death_mutex);
 	return (0);
 }
 
@@ -41,10 +42,8 @@ int	check_meals_finished(t_program *data, int i)
 	if (data->number_of_meals != -1
 		&& data->st_philo[i].meals_eaten >= data->number_of_meals)
 	{
-		pthread_mutex_unlock(&data->death_mutex);
 		return (1);
 	}
-	pthread_mutex_unlock(&data->death_mutex);
 	return (0);
 }
 
@@ -63,7 +62,8 @@ void	*ft_monitor(void *arg)
 		{
 			if (check_philosopher_death(data, i))
 				return (NULL);
-			finish += check_meals_finished(data, i);
+			if (check_meals_finished(data, i))
+				finish++;
 			i++;
 		}
 		if (data->number_of_meals != -1 && finish == data->n_of_philo)
