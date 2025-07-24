@@ -64,6 +64,14 @@ void	*routine(void *arg)
 		ft_eat(philo);
 		if (philo->program->is_dead)
 			break ;
+		pthread_mutex_lock(&philo->program->death_mutex);
+		if (philo->program->number_of_meals != -1 
+			&& philo->meals_eaten >= philo->program->number_of_meals)
+		{
+			pthread_mutex_unlock(&philo->program->death_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->program->death_mutex);
 		print_action(philo, "is sleeping");
 		ft_usleep(philo->program->time_to_sleep);
 		if (philo->program->is_dead)
