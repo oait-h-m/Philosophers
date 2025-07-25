@@ -39,12 +39,26 @@ int	check_philosopher_death(t_program *data, int i)
 
 int	check_meals_finished(t_program *data, int i)
 {
+	int	finished;
+
+	pthread_mutex_lock(&data->death_mutex);
 	if (data->number_of_meals != -1
 		&& data->st_philo[i].meals_eaten >= data->number_of_meals)
-	{
-		return (1);
-	}
-	return (0);
+		finished = 1;
+	else
+		finished = 0;
+	pthread_mutex_unlock(&data->death_mutex);
+	return (finished);
+}
+
+int	is_simulation_over(t_program *data)
+{
+	int	dead;
+
+	pthread_mutex_lock(&data->death_mutex);
+	dead = data->is_dead;
+	pthread_mutex_unlock(&data->death_mutex);
+	return (dead);
 }
 
 void	*ft_monitor(void *arg)
@@ -54,11 +68,11 @@ void	*ft_monitor(void *arg)
 	int			finish;
 
 	data = (t_program *)arg;
-	while (!data->is_dead)
+	while (!is_simulation_over(data))
 	{
 		i = 0;
 		finish = 0;
-		while (i < data->n_of_philo && !data->is_dead)
+		while (i < data->n_of_philo && !is_simulation_over(data))
 		{
 			if (check_philosopher_death(data, i))
 				return (NULL);
@@ -68,7 +82,9 @@ void	*ft_monitor(void *arg)
 		}
 		if (data->number_of_meals != -1 && finish == data->n_of_philo)
 		{
+			pthread_mutex_lock(&data->death_mutex);
 			data->is_dead = 1;
+			pthread_mutex_unlock(&data->death_mutex);
 			return (NULL);
 		}
 		usleep(1000);
