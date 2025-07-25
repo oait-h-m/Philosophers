@@ -19,7 +19,7 @@ int	main(int ac, char **av)
 
 	if (pars_arguments(ac, av) == FAILED)
 		return (FAILED);
-	if (init_arguments(&data, av) == FAILED || data->n_of_philo == 0)
+	if (init_arguments(&data, av) == FAILED || data->n_of_philo == 0 || data->number_of_meals == 0)
 		return (FAILED);
 	if (data->n_of_philo == 1)
 	{
