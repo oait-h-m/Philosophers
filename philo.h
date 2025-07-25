@@ -36,6 +36,7 @@ void						ft_usleep(long time);
 void						*one_philo(void *data);
 void						ft_eat(t_philo *philo);
 int							simulation(t_program *data);
+int							is_simulation_over(t_program *data);
 void						*ft_monitor(void *arg);
 void						ft_free(t_program *data);
 
