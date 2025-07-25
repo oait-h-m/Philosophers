@@ -26,21 +26,43 @@ void	*one_philo(void *data)
 void	print_action(t_philo *philo, char *str)
 {
 	long	time;
+	int		should_print;
 
-	pthread_mutex_lock(&philo->program->write_mutex);
-	if (!philo->program->is_dead)
+	pthread_mutex_lock(&philo->program->death_mutex);
+	should_print = !philo->program->is_dead;
+	pthread_mutex_unlock(&philo->program->death_mutex);
+	if (should_print)
 	{
-		time = get_current_time() - philo->program->start_time;
-		printf("%ld %d %s\n", time, philo->id, str);
+		pthread_mutex_lock(&philo->program->write_mutex);
+		pthread_mutex_lock(&philo->program->death_mutex);
+		if (!philo->program->is_dead)
+		{
+			time = get_current_time() - philo->program->start_time;
+			printf("%ld %d %s\n", time, philo->id, str);
+		}
+		pthread_mutex_unlock(&philo->program->death_mutex);
+		pthread_mutex_unlock(&philo->program->write_mutex);
 	}
-	pthread_mutex_unlock(&philo->program->write_mutex);
 }
 
 void	ft_eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->program->forks[philo->l_fork]);
+	int	first_fork;
+	int	second_fork;
+
+	if (philo->l_fork < philo->r_fork)
+	{
+		first_fork = philo->l_fork;
+		second_fork = philo->r_fork;
+	}
+	else
+	{
+		first_fork = philo->r_fork;
+		second_fork = philo->l_fork;
+	}
+	pthread_mutex_lock(&philo->program->forks[first_fork]);
 	print_action(philo, "has taken a fork");
-	pthread_mutex_lock(&philo->program->forks[philo->r_fork]);
+	pthread_mutex_lock(&philo->program->forks[second_fork]);
 	print_action(philo, "has taken a fork");
 	print_action(philo, "is eating");
 	pthread_mutex_lock(&philo->program->death_mutex);
@@ -48,8 +70,8 @@ void	ft_eat(t_philo *philo)
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->program->death_mutex);
 	ft_usleep(philo->program->time_to_eat);
-	pthread_mutex_unlock(&philo->program->forks[philo->l_fork]);
-	pthread_mutex_unlock(&philo->program->forks[philo->r_fork]);
+	pthread_mutex_unlock(&philo->program->forks[second_fork]);
+	pthread_mutex_unlock(&philo->program->forks[first_fork]);
 }
 
 void	*routine(void *arg)
@@ -59,22 +81,14 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
 		ft_usleep(1);
-	while (!philo->program->is_dead)
+	while (!is_simulation_over(philo->program))
 	{
 		ft_eat(philo);
-		if (philo->program->is_dead)
+		if (is_simulation_over(philo->program))
 			break ;
-		pthread_mutex_lock(&philo->program->death_mutex);
-		if (philo->program->number_of_meals != -1 
-			&& philo->meals_eaten >= philo->program->number_of_meals)
-		{
-			pthread_mutex_unlock(&philo->program->death_mutex);
-			break ;
-		}
-		pthread_mutex_unlock(&philo->program->death_mutex);
 		print_action(philo, "is sleeping");
 		ft_usleep(philo->program->time_to_sleep);
-		if (philo->program->is_dead)
+		if (is_simulation_over(philo->program))
 			break ;
 		print_action(philo, "is thinking");
 	}
