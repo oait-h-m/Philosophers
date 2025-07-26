@@ -18,7 +18,7 @@ void	*one_philo(void *data)
 
 	info = (t_program *)data;
 	printf("0 1 has taken a fork\n");
-	ft_usleep(info->time_to_die);
+	ft_usleep(info->time_to_die, info);
 	printf("%ld 1 died\n", info->time_to_die);
 	return (NULL);
 }
@@ -66,7 +66,7 @@ void	ft_eat(t_philo *philo)
 	philo->last_meal_time = get_current_time();
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->program->death_mutex);
-	ft_usleep(philo->program->time_to_eat);
+	ft_usleep(philo->program->time_to_eat, philo->program);
 	pthread_mutex_unlock(&philo->program->forks[philo->r_fork]);
 	pthread_mutex_unlock(&philo->program->forks[philo->l_fork]);
 }
@@ -77,18 +77,18 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
-		ft_usleep(1);
+		usleep(1000);
 	while (!is_simulation_over(philo->program))
 	{
 		ft_eat(philo);
 		if (is_simulation_over(philo->program))
 			break ;
 		print_action(philo, "is sleeping");
-		ft_usleep(philo->program->time_to_sleep);
+		ft_usleep(philo->program->time_to_sleep, philo->program);
 		if (is_simulation_over(philo->program))
 			break ;
 		print_action(philo, "is thinking");
-		ft_usleep(1);
+		usleep(1000);
 	}
 	return (NULL);
 }
