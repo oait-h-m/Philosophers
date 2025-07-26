@@ -6,7 +6,7 @@
 /*   By: oait-h-m <oait-h-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 21:42:45 by oait-h-m          #+#    #+#             */
-/*   Updated: 2025/07/23 21:42:47 by oait-h-m         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:32:22 by oait-h-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,24 +61,6 @@ int	is_simulation_over(t_program *data)
 	return (dead);
 }
 
-int	check_all_philosophers(t_program *data)
-{
-	int	i;
-	int	finish;
-
-	i = 0;
-	finish = 0;
-	while (i < data->n_of_philo && !is_simulation_over(data))
-	{
-		if (check_philosopher_death(data, i))
-			return (-1);
-		if (check_meals_finished(data, i))
-			finish++;
-		i++;
-	}
-	return (finish);
-}
-
 void	*ft_monitor(void *arg)
 {
 	t_program	*data;
@@ -88,7 +70,7 @@ void	*ft_monitor(void *arg)
 	while (!is_simulation_over(data))
 	{
 		finish = check_all_philosophers(data);
-		if (finish == -1)
+		if (finish == FAILED)
 			return (NULL);
 		if (data->number_of_meals != -1 && finish == data->n_of_philo)
 		{
