@@ -77,7 +77,7 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
-		usleep(1000);
+		usleep(200);
 	while (!is_simulation_over(philo->program))
 	{
 		ft_eat(philo);
@@ -88,7 +88,7 @@ void	*routine(void *arg)
 		if (is_simulation_over(philo->program))
 			break ;
 		print_action(philo, "is thinking");
-		usleep(1000);
+		usleep(200);
 	}
 	return (NULL);
 }
