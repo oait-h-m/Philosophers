@@ -6,7 +6,7 @@
 /*   By: oait-h-m <oait-h-m@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/16 07:16:25 by oait-h-m          #+#    #+#             */
-/*   Updated: 2025/07/23 22:41:18 by oait-h-m         ###   ########.fr       */
+/*   Updated: 2025/07/26 15:57:40 by oait-h-m         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	*routine(void *arg)
 		if (is_simulation_over(philo->program))
 			break ;
 		print_action(philo, "is thinking");
+		ft_usleep(1);
 	}
 	return (NULL);
 }
