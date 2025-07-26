@@ -47,31 +47,28 @@ void	print_action(t_philo *philo, char *str)
 
 void	ft_eat(t_philo *philo)
 {
-	int	first_fork;
-	int	second_fork;
-
-	if (philo->l_fork < philo->r_fork)
+	if (philo->id % 2 == 0)
 	{
-		first_fork = philo->l_fork;
-		second_fork = philo->r_fork;
+		pthread_mutex_lock(&philo->program->forks[philo->l_fork]);
+		print_action(philo, "has taken a fork");
+		pthread_mutex_lock(&philo->program->forks[philo->r_fork]);
+		print_action(philo, "has taken a fork");
 	}
 	else
 	{
-		first_fork = philo->r_fork;
-		second_fork = philo->l_fork;
+		pthread_mutex_lock(&philo->program->forks[philo->r_fork]);
+		print_action(philo, "has taken a fork");
+		pthread_mutex_lock(&philo->program->forks[philo->l_fork]);
+		print_action(philo, "has taken a fork");
 	}
-	pthread_mutex_lock(&philo->program->forks[first_fork]);
-	print_action(philo, "has taken a fork");
-	pthread_mutex_lock(&philo->program->forks[second_fork]);
-	print_action(philo, "has taken a fork");
 	print_action(philo, "is eating");
 	pthread_mutex_lock(&philo->program->death_mutex);
 	philo->last_meal_time = get_current_time();
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->program->death_mutex);
 	ft_usleep(philo->program->time_to_eat);
-	pthread_mutex_unlock(&philo->program->forks[second_fork]);
-	pthread_mutex_unlock(&philo->program->forks[first_fork]);
+	pthread_mutex_unlock(&philo->program->forks[philo->r_fork]);
+	pthread_mutex_unlock(&philo->program->forks[philo->l_fork]);
 }
 
 void	*routine(void *arg)
