@@ -28,7 +28,7 @@ int	check_philosopher_death(t_program *data, int i)
 
 	pthread_mutex_lock(&data->death_mutex);
 	time_since_meal = get_current_time() - data->st_philo[i].last_meal_time;
-	if (time_since_meal >= data->time_to_die)
+	if (time_since_meal > data->time_to_die)
 	{
 		philo_is_die(&data, i);
 		return (1);
