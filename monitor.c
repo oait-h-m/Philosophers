@@ -61,25 +61,35 @@ int	is_simulation_over(t_program *data)
 	return (dead);
 }
 
+int	check_all_philosophers(t_program *data)
+{
+	int	i;
+	int	finish;
+
+	i = 0;
+	finish = 0;
+	while (i < data->n_of_philo && !is_simulation_over(data))
+	{
+		if (check_philosopher_death(data, i))
+			return (-1);
+		if (check_meals_finished(data, i))
+			finish++;
+		i++;
+	}
+	return (finish);
+}
+
 void	*ft_monitor(void *arg)
 {
 	t_program	*data;
-	int			i;
 	int			finish;
 
 	data = (t_program *)arg;
 	while (!is_simulation_over(data))
 	{
-		i = 0;
-		finish = 0;
-		while (i < data->n_of_philo && !is_simulation_over(data))
-		{
-			if (check_philosopher_death(data, i))
-				return (NULL);
-			if (check_meals_finished(data, i))
-				finish++;
-			i++;
-		}
+		finish = check_all_philosophers(data);
+		if (finish == -1)
+			return (NULL);
 		if (data->number_of_meals != -1 && finish == data->n_of_philo)
 		{
 			pthread_mutex_lock(&data->death_mutex);
